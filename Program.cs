@@ -16,9 +16,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+//Middlewares
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+//app.UseWelcomePage();
+
+app.UseTimeMiddleware();
 
 app.MapControllers();
 
