@@ -1,0 +1,153 @@
+comandos necesarios
+dotnet new //permite crear proyectos (muestra algunos ejemplos)
+dotnet new --list //muestra todos los tipos de proyectos que se pueden crear con el sdk de NET
+dotnet build // compilar un proyecto
+dotnet restore // restaura dependencias y librerias
+dotnet watch run // permite monitorear los cambios en tiempo real
+dotnet clean // elimina archivos compilados
+dotnet new webapi -n NombreDelProyecto  //crea el proyecto con una estructura de controladores y modelos (-n para especificar
+                                          el nombre, es opcional)
+dotnet run //ejecutar el proyecto
+
+-----------------------------------------------------------------------------------------------------------
+Atributos para verbos HTTP
+-----------------------------------------------------------------------------------------------------------
+En ***.NET***, puedes usar atributos para especificar qué verbo HTTP se debe usar para un método en un controlador de API. Aquí hay algunos de los atributos más comunes:
+
+HttpGet: Este atributo se usa para indicar que un método en el controlador debe responder a las solicitudes HTTP GET.
+Por ejemplo, si quieres obtener un recurso, puedes enviar una solicitud GET a la API.
+HttpPost: Este atributo se usa para indicar que un método en el controlador debe responder a las solicitudes HTTP POST.
+Por ejemplo, si quieres crear un nuevo recurso, puedes enviar una solicitud POST a la API.
+HttpPut: Este atributo se usa para indicar que un método en el controlador debe responder a las solicitudes HTTP PUT.
+Por ejemplo, si quieres actualizar un recurso existente, puedes enviar una solicitud PUT a la API.
+HttpDelete: Este atributo se usa para indicar que un método en el controlador debe responder a las solicitudes HTTP DELETE.
+Por ejemplo, si quieres eliminar un recurso existente, puedes enviar una solicitud DELETE a la API.
+[HttpDelete("{index}")]
+	public IActionResult Delete(int index){
+		ListWeatherForecast.RemoveAt(index);
+		return Ok();
+	}
+El atributo HttpDelete especifica que este método responde a las solicitudes HTTP DELETE. Además, la ruta especificada en el
+atributo ({index}) indica que la posición del elemento a eliminar se pasa como un parámetro en la URL.
+Por ejemplo, si la lista de pronósticos del tiempo tiene un elemento en la posición 3, puedes enviar una solicitud DELETE a
+/api/weatherforecast/3 para eliminar ese elemento.
+El método devuelve un resultado de acción (IActionResult) que indica el resultado de la acción que se realizó. En este caso,
+se devuelve un resultado de acción Ok que indica que la acción se realizó correctamente y no hubo ningún error
+
+
+-----------------------------------------------------------------------------------------------------------
+Manejo de rutas
+-----------------------------------------------------------------------------------------------------------
+En ***.NET***, puedes usar el enrutamiento para definir cómo deben estructurarse las URL de tu API y cómo deben asociarse con
+los métodos en los controladores.
+
+Nuestra API de .Net nos permite personalizar la ruta desde la cual se prodra acceder a los servicio:
+[ApiController]
+[Route("api/[controller]")]
+public class WeatherForecastController : ControllerBase {}
+
+El atributo Route es un atributo de enrutamiento que se utiliza para definir la ruta base para las acciones en un controlador.
+En este caso, la ruta base para las acciones en este controlador será “api/[controller]”, donde “[controller]” se reemplazará
+automáticamente con el nombre del controlador sin la palabra “Controller”. Por ejemplo, si el nombre del controlador es
+“WeatherForecastController”, la ruta base para las acciones será “api/WeatherForecast”.
+[Route("[action]")]
+	public IEnumerable<WeatherForecast> Getw() {}
+El atributo Route se utiliza para definir la ruta para la acción. En este caso, la ruta será “[action]”, donde “[action]” se
+reemplazará automáticamente con el nombre del método de acción. Por ejemplo, si el nombre del método de acción es “Get”, la ruta
+para esta acción será “Get”.
+
+
+-----------------------------------------------------------------------------------------------------------
+MINIMAL API VS WEB API
+-----------------------------------------------------------------------------------------------------------
+“Minimal API” y “Web API” son dos conceptos diferentes en el desarrollo de API.
+
+Minimal API
+Una “Minimal API” es una API que proporciona solo las funcionalidades esenciales para cumplir con sus requisitos. Se enfoca en
+ser simple, rápida y fácil de utilizar. Una Minimal API solo incluirá los recursos y los métodos HTTP necesarios para cumplir
+con las necesidades de los usuarios.
+-Nueva plantilla con un estilo minimalista
+-Utiliza mapeo de rutas con funciones.
+-Utiliza las ultimas mejoras de C# y .NET para disminuir las líneas de código
+-Orientado a proyectos pequeños, demos, microservicios y azure functions.
+-Facilita la curva de aprendizaje de APIs en .NET
+-Complejo de escalar en proyectos de alta complejidad.
+-Si el proyecto crece y tiene demasiados Endpoints el minimal API NO está diseñado para proyectos con varios endpoints (solo
+ proyectos simples)
+ dotdet new web
+Este enfoque se utiliza a menudo cuando se quiere crear una API que sea simple y fácil de usar, pero que también sea altamente
+eficiente.
+
+Web Api
+Web API, por otro lado, es un enfoque en el que se crea una API que se integra con la web y permite a los clientes acceder a los
+recursos a través de la web.
+Esta API utiliza tecnologías web estándar, como HTTP y JSON, para comunicarse con los clientes y permitirles acceder a los
+recursos.
+dotnet new webapi
+A diferencia de una Minimal API, una Web API suele incluir una amplia gama de operaciones y recursos, lo que permite a los
+clientes realizar una amplia gama de acciones a través de la API.
+-Utiliza modelo MVC para estructurar el código (sin utilizar la vista)
+-Se puede utilizar para proyectos de cualquier tamaño
+-Mas sencillo de escalar ( utilizar más modelos, más recursos, etc)
+
+
+-----------------------------------------------------------------------------------------------------------
+¿Qué son los middlewares?
+-----------------------------------------------------------------------------------------------------------
+Los middlewares son componentes en una aplicación web que permiten realizar acciones específicas en cada solicitud que se recibe.
+
+Los middlewares se ejecutan en el orden en que se agregaron en la cadena de solicitudes, y pueden elegir si pasar la solicitud al
+siguiente middleware en la cadena o si detener la cadena y proporcionar una respuesta.
+
+Es una serie de instrucciones de codigo que se agregan al ciclo de vida de una peticion Http
+Provee una ejecucion de peticiones a travez de capas
+Facilitan la implementacion de interceptores y filtros sobre las peticiones en un API
+Orden de middlewares en .Net
+-Request
+-ExceptionHandler => Response
+-HSTS
+-HttpsRedirection
+-Static Files
+-Routing
+-CORS
+-Authentication
+-Authorization
+-Custom middlewares => Endpoint
+
+El orden en el que los middlewares son agregados en .NET es crítico, ya que puede afectar el comportamiento de la aplicación.
+
+
+-----------------------------------------------------------------------------------------------------------
+Agregando Logging a API
+-----------------------------------------------------------------------------------------------------------
+Agregar logging a una API es importante para tener una visibilidad completa sobre la actividad de la API y para poder solucionar
+problemas más eficientemente.
+Algunos de los niveles de registro comúnmente utilizados incluyen:
+Trace: Información detallada y de diagnóstico que se utiliza principalmente durante la depuración y el desarrollo.
+Debug: Información adicional que se utiliza durante la depuración y el desarrollo.
+Information: Información general que puede ser útil para comprender lo que está sucediendo en la aplicación.
+Warning: Información que indica que algo no está funcionando según lo previsto, pero que no impide el funcionamiento de la aplicación.
+Error: Información que indica que un error ha ocurrido y que puede afectar el funcionamiento de la aplicación.
+Critical: Información que indica un error grave que puede impedir el funcionamiento de la aplicación.
+Para configurar estos niveles de comunicacion, lo hacemos desde el archivo appsettings.json de la siguiente manera:
+"Logging": {
+    "LogLevel": {
+      "Default": "Debug | Information | Warning",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+
+
+-----------------------------------------------------------------------------------------------------------
+Swagger en nuestra API
+-----------------------------------------------------------------------------------------------------------
+Documentacion Oficial:
+Swagger es una herramienta de documentación de API muy popular que se utiliza para describir, producir y visualizar documentación de
+API. En .NET, se puede integrar Swagger fácilmente en una aplicación Web API mediante la adición de un paquete NuGet llamado
+Swashbuckle.
+Después de habilitar Swagger en la aplicación, puede acceder a la documentación de la API en la dirección /swagger. La documentación
+incluye información sobre los endpoints de la API, los verbos HTTP permitidos, los parámetros de entrada y las respuestas.
+Además, Swagger también proporciona una interfaz de usuario para probar la API, lo que puede ser muy útil durante el desarrollo y la
+depuración.
+Para que swagger funcione todos los metodos deben estar taggeados obligatoriamente con HttpGet, HttpPost, etc, y solo debe haber una
+ruta de acceso.
