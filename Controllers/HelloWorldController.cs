@@ -17,4 +17,13 @@ public class HelloWorldController : ControllerBase
     {
         return Ok(helloWorldService.GetHelloWorld());
     }
+
+    [HttpGet]
+    [Route("createdb")]
+    public IActionResult CreateDatabase()
+    {
+        dbcontext.Database.EnsureCreated();
+
+        return Ok();
+    }
 }
